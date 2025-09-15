@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Favorite {
+  id        Int     @id @default(autoincrement())
+  profile   Profile @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
+  profileId String
+}
+
+model Profile {
+  id        Int        @id @default(autoincrement())
+  clerkId   String     @unique
+  email     String
+  firstName String
+  lastName  String
+  userName  String
+  favorites Favorite[]
+}
